@@ -47,46 +47,47 @@ class Gfg
 class Solution
 {
     //Function to find number of strongly connected components in the graph.
-    public void dfs1(int i,ArrayList<ArrayList<Integer>> adj,boolean[] v,int V,Stack<Integer> s){
+    Stack<Integer> s=new Stack<>();
+    public void dfs1(ArrayList<ArrayList<Integer>> adj,int i,boolean[] v){
         v[i]=true;
         for(Integer x:adj.get(i)){
             if(!v[x])
-            dfs1(x,adj,v,V,s);
+            dfs1(adj,x,v);
         }
         s.add(i);
     }
-     public void dfs2(int i,ArrayList<ArrayList<Integer>> adj,boolean[] v,int V){
+    public void dfs2(ArrayList<ArrayList<Integer>> adj,int i,boolean[] v){
         v[i]=true;
         for(Integer x:adj.get(i)){
             if(!v[x])
-            dfs2(x,adj,v,V);
+            dfs2(adj,x,v);
         }
     }
     public int kosaraju(int V, ArrayList<ArrayList<Integer>> adj)
     {
         //code here
         boolean[] v=new boolean[V];
-        ArrayList<ArrayList<Integer>> t= new ArrayList<ArrayList<Integer>>();
-        Stack<Integer> s=new Stack<>();
         for(int i=0;i<V;i++){
             if(!v[i]){
-                dfs1(i,adj,v,V,s);
+                dfs1(adj,i,v);
             }
         }
-        for(int i=0;i<V;i++)
-        t.add(new ArrayList<Integer>());
+        ArrayList<ArrayList<Integer>> ar=new ArrayList<>();
         for(int i=0;i<V;i++){
-            for(Integer x: adj.get(i)){
-                t.get(x).add(i);
+            ar.add(new ArrayList<Integer>());
+        }
+        for(int i=0;i<V;i++){
+            for(Integer x:adj.get(i)){
+                ar.get(x).add(i);
             }
         }
         int c=0;
-        boolean v2[]=new boolean[V];
+         boolean[] vis=new boolean[V];
         while(!s.isEmpty()){
-            int x=s.pop();
-            if(!v2[x]){
+            int i=s.pop();
+            if(!vis[i]){
                 c++;
-                dfs2(x,t,v2,V);
+                dfs2(ar,i,vis);
             }
         }
         return c;
