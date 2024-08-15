@@ -38,25 +38,37 @@ public class Main {
 // User function Template for Java
 
 class Solution {
+    static int find(int i,int[] p){
+        if(p[i]==i)
+        return i;
+        p[i]=find(p[i],p);
+        return p[i];
+    }
+    static void union(int x,int y,int[] p){
+        int rx=find(x,p);
+        int ry=find(y,p);
+        p[rx]=p[ry];
+    } 
     static int spanningTree(int V, int E, List<List<int[]>> adj) {
         // Code Here.
-        int sum=0;
-        PriorityQueue<int[]> pq=new PriorityQueue<>((x,y) -> x[0]-y[0]);
-        pq.add(new int[]{0,0});
-        boolean[] visited=new boolean[V];
-        while(!pq.isEmpty()){
-            int[] arr=pq.poll();
-            int w=arr[0];
-            int u=arr[1];
-            if(visited[u])
-            continue;
-            visited[u]=true;
-            sum+=w;
-            for(int[] a:adj.get(u)){
-                if(!visited[a[0]])
-                pq.add(new int[]{a[1],a[0]});
-            }
+        int[] p=new int[V];
+           for(int i=0;i<V;i++){
+            p[i]=i;
         }
-        return sum;
+       ArrayList<int[]> a=new ArrayList<>();
+       for(int i=0;i<V;i++){
+           for(int[] ar:adj.get(i)){
+               a.add(new int[]{ar[1],i,ar[0]});
+           }
+       }
+       Collections.sort(a,(x,y) -> x[0]-y[0]);
+       int sum=0;
+       for(int[] arr:a){
+           if(find(arr[1],p)!=find(arr[2],p)){
+               sum=sum+arr[0];
+               union(arr[1],arr[2],p);
+           }
+       }
+       return sum;
     }
 }
