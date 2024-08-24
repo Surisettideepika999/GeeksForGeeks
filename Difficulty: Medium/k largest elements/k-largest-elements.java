@@ -31,51 +31,53 @@ public class Main {
 
 
 class Solution {
-    public void quicksort(int[] arr,int l,int h,int k,ArrayList<Integer> a){
-        if(l==h){
-            if(l>=arr.length-k)
-            a.add(arr[l]);
-            if(a.size()==k)
-            return;
-        }
-        if(l<h){
-            int p=partition(arr,l,h);
-            if(p>=arr.length-k)
-            a.add(arr[p]);
-            if(a.size()==k)
-            return;
-            quicksort(arr,l,p-1,k,a);
-            quicksort(arr,p+1,h,k,a);
+    void quickSort(int[] arr,int l,int r,int k,ArrayList<Integer> a){
+         if(l==r && l>=arr.length-k){
+                a.add(arr[l]);
+                if(a.size()==k)
+                return;
+            }
+        if(l<r){
+            int t=partition(arr,l,r);
+            if(t>=arr.length-k){
+                a.add(arr[t]);
+                if(a.size()==k)
+                return;
+            }
+            quickSort(arr,l,t-1,k,a);
+            quickSort(arr,t+1,r,k,a);
         }
     }
-    public int partition(int[] arr,int low,int high){
-         int p=arr[low],i=low,j=high;
+    int partition(int[] arr,int l,int u){
+        int p=l;
+        int i=l,j=u;
         while(i<j){
-            while(arr[i]<=p && i<=high-1)
+        while(arr[i]<=arr[l] && i<u){
             i++;
-            while(arr[j]>p && j>=low+1)
-            j--;
-            if(i<j){
-                int t=arr[i];
-                arr[i]=arr[j];
-                arr[j]=t;
-            }
         }
-        int t=arr[j];
-        arr[j]=arr[low];
-        arr[low]=t;
-        // System.out.println(arr[j]);
+        while(arr[j]>=arr[l] && j>l){
+            j--;
+        }
+        if(i<j){
+            int t=arr[i];
+            arr[i]=arr[j];
+            arr[j]=t;
+        }
+        }
+        int t=arr[l];
+        arr[l]=arr[j];
+        arr[j]=t;
         return j;
     }
     int[] kLargest(int[] arr, int n, int k) {
         // code here
         ArrayList<Integer> a=new ArrayList<>();
-        quicksort(arr,0,n-1,k,a);
-        int[] ans=new int[a.size()];
-        int i=0;
-        Collections.sort(a,Collections.reverseOrder());
-        for(Integer x:a)
-        ans[i++]=x;
-        return ans;
+        quickSort(arr,0,n-1,k,a);
+          Collections.sort(a,Collections.reverseOrder());
+         int[] ar=new int[a.size()];
+        for(int i=0;i<a.size();i++){
+            ar[i]=a.get(i);
+        }
+        return ar;
     }
 }
