@@ -30,28 +30,6 @@ class Solution {
     // arr[]: Input Array
     // N : Size of the Array arr[]
     // Function to count inversions in the array.
-    static long merge(long[] arr ,int l,int m,int r){
-        long c=0;
-        ArrayList<Long> a=new ArrayList<>();
-        int i=l,j=m+1;
-        while(i<=m && j<=r){
-            if(arr[i]>arr[j]){
-                a.add(arr[j++]);
-                c+=m-i+1;
-            }
-            else
-            a.add(arr[i++]);
-        }
-        while(i<=m)
-        a.add(arr[i++]);
-        while(j<=r)
-        a.add(arr[j++]);
-        int k=l;
-        for(Long x: a){
-            arr[k++]=x;
-        }
-        return c;
-    }
     static long mergeSort(long[] arr,int l,int r){
         long c=0;
         if(l<r){
@@ -62,8 +40,35 @@ class Solution {
         }
         return c;
     }
+    static long merge(long[] arr,int l,int m,int r){
+        ArrayList<Long> a=new ArrayList<>();
+        long c=0;
+        int i=l,j=m+1;
+        while(i<=m && j<=r){
+            if(arr[i]>arr[j]){
+                a.add(arr[j++]);
+                c+=m-i+1;
+            }
+            else{
+                a.add(arr[i++]);
+            }
+        }
+        while(i<=m){
+            a.add(arr[i++]);
+        }
+        while(j<=r){
+            a.add(arr[j++]);
+        }
+        int ind=0;
+        for(int k=l;k<=r;k++){
+            arr[k]=a.get(ind++);
+        }
+        return c;
+    }
     static long inversionCount(long arr[], int n) {
         // Your Code Here
-         return mergeSort(arr,0,n-1);
+        long c=0;
+        c=mergeSort(arr,0,n-1);
+        return c;
     }
 }
