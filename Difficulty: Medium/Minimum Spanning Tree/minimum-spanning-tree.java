@@ -47,7 +47,7 @@ class Solution {
     static void union(int x,int y,int[] p){
         int rx=find(x,p);
         int ry=find(y,p);
-        p[rx]=p[ry];
+        p[ry]=p[rx];
     } 
     static int spanningTree(int V, int E, List<List<int[]>> adj) {
         // Code Here.
