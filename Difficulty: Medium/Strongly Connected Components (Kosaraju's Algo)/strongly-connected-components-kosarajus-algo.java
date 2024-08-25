@@ -48,48 +48,48 @@ class Solution
 {
     //Function to find number of strongly connected components in the graph.
     Stack<Integer> s=new Stack<>();
-    public void dfs1(ArrayList<ArrayList<Integer>> adj,int i,boolean[] v){
+    public void dfs1(int i,boolean[] v,ArrayList<ArrayList<Integer>> adj){
         v[i]=true;
-        for(Integer x:adj.get(i)){
+        for(Integer x:adj.get(i))
+        {
             if(!v[x])
-            dfs1(adj,x,v);
+            dfs1(x,v,adj);
         }
-        s.add(i);
+        s.push(i);
     }
-    public void dfs2(ArrayList<ArrayList<Integer>> adj,int i,boolean[] v){
+     public void dfs2(int i,boolean[] v,ArrayList<ArrayList<Integer>> adj){
         v[i]=true;
-        for(Integer x:adj.get(i)){
+        for(Integer x:adj.get(i))
+        {
             if(!v[x])
-            dfs2(adj,x,v);
+            dfs2(x,v,adj);
         }
     }
     public int kosaraju(int V, ArrayList<ArrayList<Integer>> adj)
     {
         //code here
-        boolean[] v=new boolean[V];
-        for(int i=0;i<V;i++){
-            if(!v[i]){
-                dfs1(adj,i,v);
-            }
-        }
-        ArrayList<ArrayList<Integer>> ar=new ArrayList<>();
-        for(int i=0;i<V;i++){
-            ar.add(new ArrayList<Integer>());
-        }
-        for(int i=0;i<V;i++){
-            for(Integer x:adj.get(i)){
-                ar.get(x).add(i);
-            }
-        }
-        int c=0;
-         boolean[] vis=new boolean[V];
-        while(!s.isEmpty()){
-            int i=s.pop();
-            if(!vis[i]){
-                c++;
-                dfs2(ar,i,vis);
-            }
-        }
-        return c;
+        boolean vis[]=new boolean[V];
+       for(int i=0;i<V;i++){
+           if(!vis[i])
+           dfs1(i,vis,adj);
+       }
+       ArrayList<ArrayList<Integer>> adj2=new ArrayList<>();
+       for(int i=0;i<V;i++)
+       adj2.add(new ArrayList<>());
+       for(int i=0;i<V;i++){
+           for(Integer x:adj.get(i)){
+               adj2.get(x).add(i);
+           }
+       }
+       int c=0;
+       boolean v[]=new boolean[V];
+       while(!s.isEmpty()){
+           int t=s.pop();
+           if(!v[t]){
+               c++;
+               dfs2(t,v,adj2);
+           }
+       }
+       return c;
     }
 }
